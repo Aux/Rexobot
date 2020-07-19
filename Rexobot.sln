@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30014.187
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rexobot", "src\Rexobot\Rexobot.csproj", "{ED1508E3-FE4D-401D-8E8D-AD4C66A61D65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rexobot.Core", "src\Rexobot.Core\Rexobot.Core.csproj", "{F73F4E5F-F768-46FF-98D5-1C8B53E0EA9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED1508E3-FE4D-401D-8E8D-AD4C66A61D65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1508E3-FE4D-401D-8E8D-AD4C66A61D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED1508E3-FE4D-401D-8E8D-AD4C66A61D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED1508E3-FE4D-401D-8E8D-AD4C66A61D65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F73F4E5F-F768-46FF-98D5-1C8B53E0EA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F73F4E5F-F768-46FF-98D5-1C8B53E0EA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F73F4E5F-F768-46FF-98D5-1C8B53E0EA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F73F4E5F-F768-46FF-98D5-1C8B53E0EA9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {169A8CD1-BC85-4DA1-B5BC-764C226C95A4}
+	EndGlobalSection
+EndGlobal
