@@ -40,7 +40,7 @@ namespace Rexobot.Gumroad
         //[JsonProperty("custom_fields")]
         //public object CustomFields { get; set; }
         [JsonProperty("order_id")]
-        public ulong OrderId { get; set; }
+        public string OrderId { get; set; }
         //[JsonProperty("is_product_physical")]
         //public bool IsProductPhysical { get; set; }
         [JsonProperty("purchaser_id")]

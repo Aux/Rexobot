@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RestEase;
+using Rexobot.Commands;
 using Rexobot.Gumroad;
 using System;
 using System.IO;
@@ -14,14 +15,15 @@ namespace Rexobot
 {
     public class Startup
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public Startup(string[] args)
         {
-            var builder = new ConfigurationBuilder()
+            _config = new ConfigurationBuilder()
                 .SetBasePath(Path.Combine(AppContext.BaseDirectory, "common"))
-                .AddYamlFile("config.yml");
-            _config = builder.Build();
+                .AddYamlFile("config.yml")
+                //.AddCommandLine(args)
+                .Build();
         }
 
         public async Task StartAsync()
@@ -35,6 +37,8 @@ namespace Rexobot
             await discord.StartAsync();
 
             var commands = provider.GetRequiredService<CommandService>();
+            commands.AddTypeReader<Email>(new EmailTypeReader());
+            commands.AddTypeReader<RexoProduct>(new RexoProductTypeReader());
             await commands.AddModulesAsync(Assembly.GetExecutingAssembly(), provider);
 
             provider.GetRequiredService<ILoggerFactory>().AddProvider(new BotLoggerProvider(_config));
@@ -60,7 +64,10 @@ namespace Rexobot
                 .AddSingleton(RestClient.For<IGumroadApi>(GumroadConstants.ApiUrl))
                 .AddSingleton(_config)
                 .AddSingleton<LoggingService>()
+                .AddSingleton<LinkingService>()
                 .AddSingleton<CommandHandlingService>()
+                .AddTransient<ResponsiveService>()
+                .AddDbContext<RootDatabase>()
                 .AddLogging();
         }
     }
