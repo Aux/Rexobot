@@ -9,6 +9,7 @@ namespace Rexobot
         public ulong GuildId { get; set; }
         public string Name { get; set; }
         public string PreviewImageUrl { get; set; }
+        public string ShortUrl { get; set; }
         public ulong RoleId { get; set; }
         public ulong? WatchMessageId { get; set; }
         public DateTime LinkedAt { get; set; } = DateTime.UtcNow;
