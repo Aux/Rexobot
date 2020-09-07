@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Rexobot.Gumroad;
 using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rexobot.Commands
@@ -29,6 +27,8 @@ namespace Rexobot.Commands
         }
 
         [Command("products")]
+        [Summary("Show a list of all products and their ids")]
+        [Remarks("No parameters")]
         public async Task ShowProductsAsync()
         {
             var products = (await _gumroad.GetProductsAsync(_config["gumroad:token"])).Products;
@@ -38,6 +38,9 @@ namespace Rexobot.Commands
 
         [Command("createrolesync"), Alias("newrolesync", "addrolesync")]
         [Summary("Add a product to the role sync system")]
+        [Remarks("1st Parameter: Role to sync\n" +
+                 "2nd Parameter: Product Id\n" +
+                 "3rd Parameter (optional): The id of the message to watch for reactions")]
         public async Task CreateRoleSyncAsync(SocketRole socketRole, string productId, ulong? watchMessageId = null)
         {
             var result = await _gumroad.GetProductAsync(_config["gumroad:token"], productId);
@@ -52,6 +55,7 @@ namespace Rexobot.Commands
                 Id = result.Product.Id,
                 Name = result.Product.Name,
                 PreviewImageUrl = result.Product.PreviewUrl,
+                ShortUrl = result.Product.ShortUrl,
                 GuildId = Context.Guild.Id,
                 RoleId = socketRole.Id,
                 WatchMessageId = watchMessageId
@@ -64,6 +68,7 @@ namespace Rexobot.Commands
 
         [Command("removerolesync"), Alias("deleterolesync", "delrolesync")]
         [Summary("Remove a product from the role syncing system")]
+        [Remarks("1st Parameter: The name or id of a linked product")]
         public async Task RemoveRoleSyncAsync(RexoProduct product)
         {
             await ReplyAsync($"Are you sure you want to remove `{product.Name}` from the sycning service? Reply yes/no");
@@ -83,6 +88,9 @@ namespace Rexobot.Commands
 
         [Command("createsyncmessage"), Alias("createsyncmsg", "newsyncmsg", "addsyncmsg")]
         [Summary("Have the bot create a message for you in the specified channel for role sync")]
+        [Remarks("1st Parameter: The name or id of a product\n" +
+                 "2nd Parameter: The text channel to post the message in" +
+                 "3rd Parameter (optional): A custom body message")]
         public async Task CreateSyncMessageAsync(RexoProduct product, SocketTextChannel channel, [Remainder]string message = null)
         {
             var role = Context.Guild.GetRole(product.RoleId);
@@ -90,6 +98,7 @@ namespace Rexobot.Commands
             var embed = new EmbedBuilder()
                 .WithTitle(product.Name)
                 .WithThumbnailUrl(product.PreviewImageUrl)
+                .WithUrl(product.ShortUrl)
                 .WithDescription(message != null ? message : $"If you would like to sync your Gumroad purchase for this product to Discord for the {role.Mention} role, add a reaction to this message!");
 
             var msg = await channel.SendMessageAsync(embed: embed.Build());
@@ -98,6 +107,9 @@ namespace Rexobot.Commands
         }
 
         [Command("setsyncmessage"), Alias("setsyncmsg")]
+        [Summary("Specify a premade message to watch for reactions")]
+        [Remarks("1st Parameter: The name or id of a linked product" +
+                 "2nd Parameter: The id of the message to watch for reactions")]
         public Task SetSyncMessageAsync(RexoProduct product, ulong msgId)
         {
             product.WatchMessageId = msgId;
