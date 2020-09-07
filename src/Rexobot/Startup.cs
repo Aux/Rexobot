@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +55,8 @@ namespace Rexobot
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
                 {
                     MessageCacheSize = 50,
-                    LogLevel = Discord.LogSeverity.Verbose
+                    GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.GuildMessageReactions,
+                    LogLevel = LogSeverity.Verbose
                 }))
                 .AddSingleton(new CommandService(new CommandServiceConfig
                 {
